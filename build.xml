@@ -4,7 +4,7 @@
     <property name="modules.dir" value="src/mods"/>
     <property name="scripts.dir" value="src/scripts"/>
     <property name="dist.dir" value="dist"/>
-    <property name="vertx.libs" value="${VERTX_HOME}/lib/jars"/>
+    <property name="vertx.libs" value="/usr/local/vert.x/lib"/>
 
     <!-- targets -->
     <target name="clean">
