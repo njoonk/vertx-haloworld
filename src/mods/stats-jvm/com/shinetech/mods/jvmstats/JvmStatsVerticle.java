@@ -5,7 +5,7 @@ import org.vertx.java.core.eventbus.EventBus;
 import org.vertx.java.core.eventbus.Message;
 import org.vertx.java.core.json.JsonObject;
 import org.vertx.java.core.logging.Logger;
-import org.vertx.java.deploy.Verticle;
+import org.vertx.java.platform.Verticle;
 
 import java.lang.management.ManagementFactory;
 import java.lang.management.MemoryMXBean;
@@ -28,8 +28,8 @@ public class JvmStatsVerticle extends Verticle {
     private Logger logger;
     
     @Override
-    public void start() throws Exception {
-        logger = container.getLogger();
+    public void start() {
+        logger = container.logger();
         
         registerHandlers();
     }
@@ -40,7 +40,7 @@ public class JvmStatsVerticle extends Verticle {
 
         Handler<Message<JsonObject>> handler = new Handler<Message<JsonObject>>() {
             public void handle(Message<JsonObject> event) {
-                handleRequest(event.body);      
+                handleRequest(event.body());      
             }
         };
         

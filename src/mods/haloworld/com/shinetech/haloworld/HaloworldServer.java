@@ -6,7 +6,7 @@ import org.vertx.java.core.http.HttpServer;
 import org.vertx.java.core.json.JsonArray;
 import org.vertx.java.core.json.JsonObject;
 import org.vertx.java.core.logging.Logger;
-import org.vertx.java.deploy.Verticle;
+import org.vertx.java.platform.Verticle;
 
 import java.util.Arrays;
 import java.util.Collections;
@@ -21,10 +21,10 @@ public class HaloworldServer extends Verticle {
     private Logger logger;
 
     @Override
-    public void start() throws Exception {
-        logger = container.getLogger();
+    public void start() {
+        logger = container.logger();
         createSockJsServer();
-        
+
         ModuleDeployment[] deployments = new ModuleDeployment[] {
             webServerDeployment(),
             new ModuleDeployment("chat-manager", new JsonObject()),
@@ -64,7 +64,7 @@ public class HaloworldServer extends Verticle {
             .add(new JsonObject().putString("address", "chat.manager.list"));
         
         
-        vertx.createSockJSServer(server).bridge(config, permitted);
+        vertx.createSockJSServer(server).bridge(config, permitted, permitted);
         server.listen(8081);
         
 
@@ -80,7 +80,7 @@ public class HaloworldServer extends Verticle {
                     ModuleDeployment deployment = it.next();
                     logger.debug("Deploying module: " + deployment.moduleName);
 
-                    container.deployVerticle(deployment.moduleName, deployment.moduleConfig, 1, this);
+                    container.deployVerticle(deployment.moduleName, deployment.moduleConfig, 1);
                 } else {
                     doneHandler.handle(null);
                 }

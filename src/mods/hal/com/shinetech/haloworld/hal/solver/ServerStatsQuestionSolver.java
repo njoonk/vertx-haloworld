@@ -75,7 +75,7 @@ public class ServerStatsQuestionSolver implements QuestionSolver {
             eventBus.registerHandler(RESULTS_ADDRESS, new Handler<Message<JsonObject>>() {
                 public void handle(Message<JsonObject> event) {
                     context.getLogger().debug("Distributing stats results");
-                    distributeStats(event.body, context);
+                    distributeStats(event.body(), context);
                 }
             });
             gettingResults = true;

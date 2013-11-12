@@ -34,7 +34,7 @@ public class WolframAlphaSolver implements QuestionSolver {
 
         Handler<Message<JsonObject>> handler = new Handler<Message<JsonObject>>() {
             public void handle(Message<JsonObject> event) {
-                handleReply(event.body, context);
+                handleReply(event.body(), context);
             }
         };
         context.getEventBus().send(ADDRESS, message, handler);

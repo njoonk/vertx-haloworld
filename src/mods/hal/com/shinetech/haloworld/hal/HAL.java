@@ -8,7 +8,7 @@ import org.vertx.java.core.eventbus.EventBus;
 import org.vertx.java.core.eventbus.Message;
 import org.vertx.java.core.json.JsonObject;
 import org.vertx.java.core.logging.Logger;
-import org.vertx.java.deploy.Verticle;
+import org.vertx.java.platform.Verticle;
 
 import java.util.ArrayList;
 import java.util.Date;
@@ -46,8 +46,8 @@ public class HAL extends Verticle {
     public HAL() { }
 
     @Override
-    public void start() throws Exception {
-        logger = container.getLogger();
+    public void start() {
+        logger = container.logger();
 
         registerHandlers();
 
@@ -79,7 +79,7 @@ public class HAL extends Verticle {
     }
     
     private void handleUpdateMessage(Message<JsonObject> message) {
-        JsonObject body = message.body;
+        JsonObject body = message.body();
         
         String eventType = body.getString("event");
         if("joined".equals(eventType)) {
@@ -91,7 +91,7 @@ public class HAL extends Verticle {
     }
 
     private void handleChatMessage(Message<JsonObject> message) {
-        JsonObject body = message.body;
+        JsonObject body = message.body();
         
         // ignore if not a chat message
         if(!CHAT.name().equals(body.getString("messageType"))) {

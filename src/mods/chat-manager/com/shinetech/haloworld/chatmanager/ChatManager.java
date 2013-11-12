@@ -6,7 +6,7 @@ import org.vertx.java.core.eventbus.Message;
 import org.vertx.java.core.json.JsonArray;
 import org.vertx.java.core.json.JsonObject;
 import org.vertx.java.core.logging.Logger;
-import org.vertx.java.deploy.Verticle;
+import org.vertx.java.platform.Verticle;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -73,7 +73,7 @@ public class ChatManager extends Verticle {
     }
 
     private void handlePingRequest(Message<JsonObject> event) {
-        String name = event.body.getString("name");
+        String name = event.body().getString("name");
 //        logger.debug("Received ping from " + name);
         
         // update last seen timestamp for member or add them in if they are not there
@@ -126,8 +126,8 @@ public class ChatManager extends Verticle {
     }
 
     @Override
-    public void start() throws Exception {
-        logger = container.getLogger();
+    public void start() {
+        logger = container.logger();
 
         // register handlers to listen for list and ping requests.
         registerHandlers();
