@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src/mods/hal"/>
+	<classpathentry kind="src" path="src/mods/wolfram-alpha"/>
 	<classpathentry kind="src" path="src/mods/chat-manager"/>
 	<classpathentry kind="src" path="src/mods/stats-jvm"/>
 	<classpathentry kind="src" path="src/mods/haloworld"/>

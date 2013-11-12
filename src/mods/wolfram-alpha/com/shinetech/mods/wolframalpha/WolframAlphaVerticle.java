@@ -8,7 +8,7 @@ import org.vertx.java.core.http.HttpClient;
 import org.vertx.java.core.http.HttpClientResponse;
 import org.vertx.java.core.json.JsonObject;
 import org.vertx.java.core.logging.Logger;
-import org.vertx.java.deploy.Verticle;
+import org.vertx.java.platform.Verticle;
 import org.xml.sax.Attributes;
 import org.xml.sax.SAXException;
 import org.xml.sax.helpers.DefaultHandler;
@@ -29,8 +29,8 @@ public class WolframAlphaVerticle extends Verticle {
     private HttpClient httpClient;
     
     @Override
-    public void start() throws Exception {
-        logger = container.getLogger();
+    public void start() {
+        logger = container.logger();
 
         registerHandlers();
 
@@ -46,7 +46,7 @@ public class WolframAlphaVerticle extends Verticle {
         eventBus.registerHandler(ADDRESS, new Handler<Message<JsonObject>>() {
             @Override
             public void handle(Message<JsonObject> event) {
-                JsonObject body = event.body;
+                JsonObject body = event.body();
                 String question = body.getString("question");
                 queryWolfram(question, event);
             }
@@ -60,8 +60,8 @@ public class WolframAlphaVerticle extends Verticle {
             String encodedQuestion = URLEncoder.encode(question, "UTF-8");
             httpClient.getNow("/v2/query?input=" + encodedQuestion + "&appid=" + API_KEY, new Handler<HttpClientResponse>() {
                 public void handle(HttpClientResponse response) {
-                    logger.debug("Response code: " + response.statusCode);
-                    if(response.statusCode == 200) {
+                    logger.debug("Response code: " + response.statusCode());
+                    if(response.statusCode() == 200) {
                         // accumulate data into our buffer for parsing
                         response.dataHandler(new Handler<Buffer>() {
                             public void handle(Buffer data) {
